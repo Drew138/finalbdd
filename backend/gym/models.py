@@ -1,18 +1,5 @@
 from django.db import models
 from .choices import *
-from django.contrib.postgres.fields import JSONField
-# Create your models here.
-
-# calendario --
-# zona --
-# rutina --
-# persona --
-# clase --
-# equipo de clase --
-# equipo de entrenamiento --
-
-# !terminado
-# registro de clase --
 
 
 class Calendario(models.Model):  # TODO
@@ -23,6 +10,9 @@ class Calendario(models.Model):  # TODO
     fecha_inicio = models.DateField(null=False, blank=False)
     fecha_final = models.DateField(null=False, blank=False)
 
+    def __str__(self):
+        return f"dia {self.dia}, hora inicial {self.hora_inicial}, hora final {self.hora_final}, fecha inicio {self.fecha_inicio}, fecha final {self.fecha_final}"
+
 
 class Zona(models.Model):
 
@@ -31,13 +21,14 @@ class Zona(models.Model):
     tipo = models.CharField(
         max_length=255, choices=TipoZonasEnum.choices, null=False, blank=False)  # enum
 
+    def __str__(self):
+        return f"piso {self.piso}, tipo {self.tipo}"
 
-class RegistroDeClase(models.Model):
-    persona = models.ForeignKey(
-        'Persona', null=False, on_delete=models.CASCADE)
-    calendario = models.ForeignKey(
-        'Calendario', null=False, on_delete=models.CASCADE)
-    clase = models.ForeignKey('Clase', null=False, on_delete=models.CASCADE)
+
+# class RegistroDeClase(models.Model):
+#     persona = models.ForeignKey(
+#         'Persona', null=False, on_delete=models.CASCADE)
+#     clase = models.ForeignKey('Clase', null=False, on_delete=models.CASCADE)
 
 
 class Rutina(models.Model):
@@ -48,6 +39,9 @@ class Rutina(models.Model):
         max_length=255, choices=DificultadesEnum.choices, null=False, blank=False)  # enum
     repeticiones = models.IntegerField(null=False, blank=False)
     lista_equipos = models.JSONField()  # TODO
+
+    def __str__(self):
+        return f"grupo muscular {self.grupo_muscular}, cantidad de ejercicios {self.cantidad_ejercicios}, dificultad {self.dificultad}, repeticiones {self.repeticiones}, lista de equipos {self.lista_equipos}"
 
 
 class Persona(models.Model):
@@ -60,6 +54,11 @@ class Persona(models.Model):
     plan = models.CharField(
         max_length=255, choices=PlanPagoEnum.choices, null=False, blank=False)  # enum
     remuneracion = models.IntegerField(default=0)
+    clases = models.ManyToManyField(
+        'Clase', blank=True)
+
+    def __str__(self):
+        return f"nombre {self.nombre}, tipo {self.tipo}, sexo {self.sexo}, plan {self.plan}, remuneracion {self.remuneracion}"
 
 
 class EquipoDeEntrenamiento(models.Model):
@@ -74,6 +73,9 @@ class EquipoDeEntrenamiento(models.Model):
     marca = models.CharField(max_length=255, null=False, blank=False)
     cantidad = models.IntegerField(null=False, blank=False)
 
+    def __str__(self):
+        return f"nombre {self.nombre}, grupo muscular {self.grupo_muscular}, zona {self.zona}, fecha mantenimiento {self.fecha_mantemiento}, fecha adquisicion {self.fecha_adquisicion}, marca {self.marca}, cantidad {self.cantidad}"
+
 
 class Clase(models.Model):
     nombre = models.CharField(max_length=255, null=False, blank=False)
@@ -85,5 +87,10 @@ class Clase(models.Model):
     rutina = models.ForeignKey(
         'Rutina', null=False, blank=False, on_delete=models.CASCADE)
     maximo_personas = models.IntegerField(null=False, blank=False)
+    calendario = models.ForeignKey(
+        'Calendario', null=False, blank=False, on_delete=models.CASCADE)
     equipos_de_entrenamiento = models.ManyToManyField(
         'EquipoDeEntrenamiento', blank=True)
+
+    def __str__(self):
+        return f"nombre {self.nombre}, tipo {self.tipo}, costo {self.costo}, zona {self.zona}, rutina {self.rutina}, maximo personas {self.maximo_personas}, calendario {self.calendario}, equipos entrenamiento {self.equipos_de_entrenamiento}"

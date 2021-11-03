@@ -2,8 +2,6 @@ from django.contrib import admin
 from .models import *
 # Register your models here.
 
-# admin.register(Calendario)
-
 
 @admin.register(Calendario)
 class CalendarioAdmin(admin.ModelAdmin):
@@ -17,12 +15,14 @@ class RutinaAdmin(admin.ModelAdmin):
 
 @admin.register(Persona)
 class PersonaAdmin(admin.ModelAdmin):
-    pass
+    search_fields = ['id', 'nombre', 'tipo', 'sexo', 'plan', 'remuneracion']
+    list_filter = ['id', 'nombre', 'tipo', 'sexo', 'plan', 'remuneracion']
+    list_display = ['nombre', 'tipo', 'sexo', 'plan', 'remuneracion']
 
 
-@admin.register(RegistroDeClase)
-class RegistroDeClaseAdmin(admin.ModelAdmin):
-    pass
+# @admin.register(RegistroDeClase)
+# class RegistroDeClaseAdmin(admin.ModelAdmin):
+#     pass
 
 
 @admin.register(Zona)
