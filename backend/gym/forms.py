@@ -6,7 +6,7 @@ from django.contrib.admin import widgets
 
 class ClaseForm(ModelForm):
     equipos_de_entrenamiento = forms.ModelMultipleChoiceField(EquipoDeEntrenamiento.objects.all(
-    ), widget=widgets.FilteredSelectMultiple("EquipoDeEntrenamiento", False, attrs={'rows': '2'}))
+    ), widget=widgets.FilteredSelectMultiple("EquipoDeEntrenamiento", False, attrs={'rows': '2'}), required=False)
 
     class Meta:
         model = Clase
@@ -41,7 +41,7 @@ class RutinaForm(ModelForm):
 
 class PersonaForm(ModelForm):
     clases = forms.ModelMultipleChoiceField(Clase.objects.all(
-    ), widget=widgets.FilteredSelectMultiple("Clase", False, attrs={'rows': '2'}))
+    ), widget=widgets.FilteredSelectMultiple("Clase", False, attrs={'rows': '2'}), required=False)
 
     class Meta:
         model = Persona

@@ -1,7 +1,15 @@
 {% extends "layout/layout.html" %}
 
 {% block content %}
-<form class="form">
+<form class="form" method="POST">
+	{% csrf_token %}
+	<label>Primary Key</label>
+	<input type="number" name="primary_key">
+
+	<input type="submit" name="buscar" value="Buscar">
+	<input type="submit" name="regresar" value="Regresar">
+</form>
+<form class="form" method="POST">
 	{% csrf_token %}
 	<table>
 		{{form.media}}
@@ -11,9 +19,8 @@
 	<input type="submit" name="crear" value="Crear">
 	<input type="submit" name="borrar" value="Borrar">
 	<input type="submit" name="actualizar" value="Actualizar">
-	<input type="submit" name="buscar" value="Buscar">
-	<input type="submit" name="regresar" value="Regresar">
 
 </form>
+
 <script type="text/javascript" src="{% url 'jsi18n' %}"></script>
 {% endblock %}
