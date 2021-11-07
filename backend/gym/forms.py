@@ -35,7 +35,7 @@ class ZonaForm(ModelForm):
 
 class RutinaForm(ModelForm):
     class Meta:
-        model = Zona
+        model = Rutina
         fields = '__all__'
 
 
